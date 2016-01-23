@@ -36,17 +36,15 @@ void Game::update()
                 if (gamestate == INTRO)// && introDone)
                 {
                     gamestate = HANK;
-                    currentNews = startNews.at(randint(0, startNews.size() - 1));
+                    currentNews = startNews.at(1);//randint(0, startNews.size() - 1));
+
                     timeHankStartedTalking = totalTime.asMilliseconds();
                 }
                 if (gamestate == HANK)// && doneSpeaking)
                 {
                     gamestate = SELECTION;
-                    std::cout << "set gamestate \n";
                     currentPaper.setNews(currentNews);
-                    std::cout << "set news \n";
                     currentPaper.generate();
-                    std::cout << "generate news \n";
                 }
                 std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                 std::cout << "mouse y: " << event.mouseButton.y << std::endl;
@@ -147,7 +145,9 @@ void Game::drawSelection()
 
     for (int i = 0; i < 3; i++)
     {
-        drawString(currentNews.headlines[i].text, Vector2f(210 * i * 2 + 16, 42), Color(0, 0, 0, 255), 22);
+        drawString(currentNews.headlines[i].text, Vector2f(210 * i * 2 + 20, 42), Color(0, 0, 0, 255), 22);
+        drawString("Popularity", Vector2f(104 + 210 * i * 2, 614), Color(150, 150, 150), 22);
+        drawString("Truth", Vector2f(112 + 210 * i * 2, 658), Color(150, 150, 150), 22);
     }
 }
 
@@ -218,7 +218,7 @@ void Game::loadNews()
             {
                 news.message = fileContent;
                 news.message.erase(news.message.begin());
-                std::cout << news.message << "\n";
+                //std::cout << news.message << "\n";
             }
 
             if (fileContent[0] == 's')
@@ -255,10 +255,19 @@ void Game::loadNews()
                     startNews.push_back(news);
                 else
                     otherNews.push_back(news);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    headlines[i] = ;
+                }
             }
 
         }
         newsFile.close();
+    }
+    for (int i = 0; i < startNews.size(); i++)
+    {
+        std::cout << startNews[i].message << "\n";
     }
 }
 
@@ -297,7 +306,6 @@ Headline Game::createHeadline(std::string line)
             str_food += line[i];
     }
 
-    //std::cout << "\"" << text << "\" quality: " << str_quality << ", truth: " << str_truth << "\n";
     headline.text = text;
     std::string::size_type sz;
     headline.quality = std::stoi(str_quality, &sz);
@@ -363,7 +371,7 @@ void Game::drawString(std::string text, Vector2f position, Color color, int line
 int Game::randint(int low, int high)
 {
     int value = rand() % (high + 1 - low) + low;
-    srand(totalTime.asMicroseconds() * value * rand());
+    srand(totalTime.asMilliseconds() * value * rand());
 
     return value;
 }
