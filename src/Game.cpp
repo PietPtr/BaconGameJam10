@@ -59,7 +59,10 @@ void Game::update()
                         articleChosen = 2;
 
                     recalculateStats();
-
+                }
+                else if (gamestate == REACTION && sympathy == newSympathy && emotion == newEmotion && money == newMoney && food == newFood)
+                {
+                    gamestate = HANK;
                 }
                 //std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                 //std::cout << "mouse y: " << event.mouseButton.y << std::endl;
@@ -119,6 +122,15 @@ void Game::recalculateStats()
     newEmotion = emotion + chosenHeadline.emotion;
     newMoney = money + chosenHeadline.money;
     newFood = food + chosenHeadline.food;
+
+    newSympathy = newSympathy > 100 ? 100 : newSympathy;
+    newSympathy = newSympathy < 0 ? 0 : newSympathy;
+    newEmotion = newEmotion > 100 ? 100 : newEmotion;
+    newEmotion = newEmotion < 0 ? 0 : newEmotion;
+    newMoney = newMoney > 100 ? 100 : newMoney;
+    newMoney = newMoney < 0 ? 0 : newMoney;
+    newFood = newFood > 100 ? 100 : newFood;
+    newFood = newFood < 0 ? 0 : newFood;
 }
 
 void Game::draw()
@@ -282,7 +294,7 @@ void Game::drawReaction()
     drawString(moneyStr, Vector2f(108, 330), Color(150, 150, 150), 22);
     drawString(foodStr, Vector2f(116, 468), Color(150, 150, 150), 22);
 
-    drawString("NEXT DAY", Vector2f(1140, 680), Color(50, 50, 50), 22);
+    drawString("Click to advance to the next day.", Vector2f(752, 690), Color(25, 25, 25), 100);
 }
 
 bool Game::drawHankSpeaking(int startTime, std::string text)
