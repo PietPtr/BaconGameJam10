@@ -48,6 +48,11 @@ class Game
         Clock clock;
         int frame = 0;
 
+        bool introDone = false;
+        int timeHankStartedTalking = 0;
+        bool doneSpeaking = false;
+        News currentNews;
+
         std::vector<std::string> audioFileNames { };
         std::vector<std::string> textureFileNames { "font.png", "hank-bg.png", "moustache.png", "table.png", "empty-paper.png" };
         std::vector<Audio*> sfx;

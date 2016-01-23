@@ -1,4 +1,4 @@
-;Yesterday, the king held a parade to celebrate his fathers birthday. Here's what our reporters have to say about it.
+;Yesterday, the king held a parade to celebrate his fathers birthday. This is what our reporters have to say about it.
 :King wastes thousands on parade:80:60:10:10:-5:0
 :Royal father turns 90:50:90:-10:-10:-5:0
 :12 reasons yesterdays parade was a waste of time:90:10:5:20:-5:0
@@ -7,10 +7,10 @@ e0
 m0
 f0
 -
-;Yesterday, the king held a parade to celebrate his fathers birthday. Here's what our reporters have to say about it. 2
-:King wastes thousands on parade:80:60:10:10:-5:0
-:Royal father turns 90:50:90:-10:-10:-5:0
-:12 reasons yesterdays parade was a waste of time:90:10:5:20:-5:0
+;The militairy has been growing. They held a huge recruitment campaign at the main square of the capital. Take a look at these articles.
+:Join your country in the fight against evil!:70:20:20:-10:0:0
+:Illegal demonstrations at the capital:40:70:-25:10:0:0
+:You wont believe what they did now!!:100:10:10:0:0:0
 s0
 e0
 m0

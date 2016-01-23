@@ -13,7 +13,7 @@ class Paper
     protected:
     private:
         News news;
-        Image image;
+        std::vector<Image> images;
 };
 
 #endif // PAPER_H
