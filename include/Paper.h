@@ -1,8 +1,7 @@
 #ifndef PAPER_H
 #define PAPER_H
-
+#include "include.h"
 #include <SFML/Graphics.hpp>
-#include "News.h"
 using namespace sf;
 
 class Paper

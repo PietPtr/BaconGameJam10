@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Audio.h"
-#include "News.h"
+#include "include.h"
 
 using namespace sf;
 
@@ -14,6 +14,7 @@ class Game
         void draw();
         void drawString(std::string, Vector2f position);
         void loadNews();
+        Headline createHeadline(std::string line);
         bool isWindowOpen();
 
         void loadAudio(std::vector<std::string> fileNames);
@@ -35,7 +36,7 @@ class Game
         std::vector<Audio*> sfx;
 
         std::vector<News> startNews;
-        std::vector<News> news;
+        std::vector<News> otherNews;
 
         std::vector<Texture> textures;
 };

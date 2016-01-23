@@ -80,10 +80,69 @@ void Game::loadNews()
     //newsFile.open("assets/news/start");
     if (newsFile.is_open())
     {
+        News news;
+        Headline headlines[3];
+        std::string message;
+
         while(getline(newsFile, fileContent))
-            std::cout << fileContent << "\n";
+        {
+            if (fileContent[0] == ':')
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (headlines[i].quality == -1) // means that the headline is still empty
+                    {
+                        headlines[i] = createHeadline(fileContent);
+                        break;
+
+                    }
+                }
+            }
+
+            if (fileContent[0] == ';')
+            {
+                message = fileContent;
+                message.erase(message.begin());
+                std::cout << message << "\n";
+            }
+
+            //if (fileContent[0] == '-')
+
+        }
         newsFile.close();
     }
+}
+
+Headline Game::createHeadline(std::string line)
+{
+    Headline headline;
+    int reading = 0;
+    line.erase(line.begin());
+    std::string text;
+    std::string str_quality;
+    std::string str_truth;
+    for (int i = 0; i < line.length(); i++)
+    {
+        if (line[i] == ':')
+        {
+            reading++;
+            continue;
+        }
+        if (reading == 0)
+            text += line[i];
+        else if (reading == 1)
+            str_quality += line[i];
+        else if (reading == 2)
+            str_truth += line[i];
+    }
+
+    std::cout << "\"" << text << "\" quality: " << str_quality << ", truth: " << str_truth << "\n";
+    headline.text = text;
+    std::string::size_type sz;
+    headline.quality = std::stoi(str_quality, &sz);
+    headline.truth = std::stoi(str_truth, &sz);
+
+    return headline;
 }
 
 void Game::drawString(std::string text, Vector2f position)

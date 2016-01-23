@@ -1,11 +1,19 @@
 #ifndef INCLUDE_H
 #define INCLUDE_H
+#include <iostream>
 
-int randint(int low, int high, int seed)
+struct Headline
 {
-    srand(seed);
-    int value = rand() % (high + 1 - low) + low;
-    return value;
-}
+    std::string text;
+    int quality = -1;
+    int truth = -1;
+};
+
+struct News
+{
+    Headline headlines[3];
+    std::string message;
+};
+
 
 #endif // INCLUDE_HZ

@@ -6,13 +6,13 @@ class News
 {
     public:
         News();
-        void initiate(std::string message, std::string* headlines, int quality, int truth);
+        void initiate(std::string message, std::string* headlines, int* quality, int* truth);
     protected:
     private:
         std::string message;
         std::string* headlines;
-        int quality;
-        int truth;
+        int* quality;
+        int* truth;
 };
 
 #endif // NEWS_H
