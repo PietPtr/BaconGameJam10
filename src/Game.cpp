@@ -76,8 +76,7 @@ void Game::loadTextures(std::vector<std::string> textureFileNames)
 void Game::loadNews()
 {
     std::string fileContent;
-    std::ifstream newsFile("assets/news/start");
-    //newsFile.open("assets/news/start");
+    std::ifstream newsFile("assets/news");
     if (newsFile.is_open())
     {
         News news;
@@ -106,7 +105,41 @@ void Game::loadNews()
                 std::cout << message << "\n";
             }
 
-            //if (fileContent[0] == '-')
+            if (fileContent[0] == 's')
+            {
+                std::string str_sympathy = fileContent;
+                str_sympathy.erase(str_sympathy.begin());
+                news.sympathy = std::stoi(str_sympathy, nullptr);
+            }
+            if (fileContent[0] == 'e')
+            {
+                std::string str_emotion = fileContent;
+                str_emotion.erase(str_emotion.begin());
+                news.emotion = std::stoi(str_emotion, nullptr);
+            }
+            if (fileContent[0] == 'm')
+            {
+                std::string str_money = fileContent;
+                str_money.erase(str_money.begin());
+                news.money = std::stoi(str_money, nullptr);
+            }
+            if (fileContent[0] == 'f')
+            {
+                std::string str_food = fileContent;
+                str_food.erase(str_food.begin());
+                news.food = std::stoi(str_food, nullptr);
+            }
+            if (fileContent[0] == '-')
+            {
+                news.headlines[0] = headlines[0];
+                news.headlines[1] = headlines[1];
+                news.headlines[2] = headlines[2];
+
+                if (news.food == 0 && news.sympathy == 0 && news.emotion == 0 && news.money == 0)
+                    startNews.push_back(news);
+                else
+                    otherNews.push_back(news);
+            }
 
         }
         newsFile.close();
@@ -121,6 +154,10 @@ Headline Game::createHeadline(std::string line)
     std::string text;
     std::string str_quality;
     std::string str_truth;
+    std::string str_sympathy;
+    std::string str_emotion;
+    std::string str_money;
+    std::string str_food;
     for (int i = 0; i < line.length(); i++)
     {
         if (line[i] == ':')
@@ -134,13 +171,25 @@ Headline Game::createHeadline(std::string line)
             str_quality += line[i];
         else if (reading == 2)
             str_truth += line[i];
+        else if (reading == 3)
+            str_sympathy += line[i];
+        else if (reading == 4)
+            str_emotion += line[i];
+        else if (reading == 5)
+            str_money += line[i];
+        else if (reading == 6)
+            str_food += line[i];
     }
 
-    std::cout << "\"" << text << "\" quality: " << str_quality << ", truth: " << str_truth << "\n";
+    //std::cout << "\"" << text << "\" quality: " << str_quality << ", truth: " << str_truth << "\n";
     headline.text = text;
     std::string::size_type sz;
     headline.quality = std::stoi(str_quality, &sz);
     headline.truth = std::stoi(str_truth, &sz);
+    headline.sympathy = std::stoi(str_sympathy, &sz);
+    headline.emotion = std::stoi(str_emotion, &sz);
+    headline.money = std::stoi(str_money, &sz);
+    headline.food = std::stoi(str_food, &sz);
 
     return headline;
 }
