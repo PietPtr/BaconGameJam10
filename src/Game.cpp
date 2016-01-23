@@ -31,10 +31,36 @@ void Game::update()
                 window->close();
             }
         }
+        if (event.type == sf::Event::MouseButtonPressed)
+            {
+                std::cout << "press" << "\n";
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    std::cout << "the right button was pressed" << std::endl;
+                    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
+                    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+                }
+            }
     }
 
     dt = clock.restart();
     totalTime += dt;
+
+    switch (gamestate)
+    {
+    case INTRO:
+
+        break;
+    case HANK:
+
+        break;
+    case SELECTION:
+
+        break;
+    case REACTION:
+
+        break;
+    }
 
     frame++;
 }
@@ -43,9 +69,57 @@ void Game::draw()
 {
     window->clear();
 
-    drawString("King wastes millions   on failing parade.", Vector2f(0, 0));
+    //drawString("King wastes millions   on failing parade.", Vector2f(0, 0));
+
+    switch (gamestate)
+    {
+    case INTRO:
+        drawIntro();
+        break;
+    case HANK:
+        //drawHank();
+        break;
+    case SELECTION:
+        //drawSelection();
+        break;
+    case REACTION:
+    //drawReaction();
+        break;
+    }
 
     window->display();
+}
+
+void Game::drawIntro()
+{
+    Sprite bg;
+    bg.setTexture(textures[1]);
+    bg.setScale(2, 2);
+    window->draw(bg);
+
+    Sprite moustache;
+    moustache.setTexture(textures[2]);
+    moustache.setScale(4, 4);
+    moustache.setOrigin(22, 7);
+    moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
+    moustache.setRotation(sin(frame / 8) * 2);
+    window->draw(moustache);
+
+    std::cout << drawHankSpeaking(0, introText) <<
+}
+
+bool Game::drawHankSpeaking(int startTime, std::string text)
+{
+    std::string textToBeDrawn;
+    int delay = 25;
+    int limit = (totalTime.asMilliseconds() - startTime) / delay > text.length() ? text.length() : (totalTime.asMilliseconds() - startTime) / delay;
+    for (int i = 0; i < limit; i++)
+    {
+        textToBeDrawn += text[i];
+    }
+    drawString(textToBeDrawn, Vector2f(4, 520), Color(200, 200, 200), 78);
+
+    return limit == text.length();
 }
 
 bool Game::isWindowOpen()
@@ -194,10 +268,9 @@ Headline Game::createHeadline(std::string line)
     return headline;
 }
 
-void Game::drawString(std::string text, Vector2f position)
+void Game::drawString(std::string text, Vector2f position, Color color, int lineLength)
 {
     int line = 0;
-    int lineLength = 22;
     for (int i = 0; i < text.length(); i++)
     {
         if (i % lineLength == 0)
@@ -239,6 +312,7 @@ void Game::drawString(std::string text, Vector2f position)
         else
             letter.setTextureRect(IntRect(3 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
         letter.setPosition(position.x + (i % lineLength) * (letterSize.x + 1) * letterScale, position.y + (line - 1) * letterSize.y * letterScale);
+        letter.setColor(color);
         window->draw(letter);
 
     }

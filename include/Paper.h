@@ -8,7 +8,7 @@ class Paper
 {
     public:
         Paper();
-        void generate();
+        void generate(Texture paperTexture);
         void draw();
     protected:
     private:

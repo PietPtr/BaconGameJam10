@@ -5,7 +5,7 @@ Paper::Paper()
     //ctor
 }
 
-void Paper::generate()
+void Paper::generate(Texture paperTexture)
 {
 
 }
