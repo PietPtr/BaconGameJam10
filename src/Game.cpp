@@ -40,6 +40,8 @@ void Game::draw()
 {
     window->clear();
 
+    drawString("This is, a test for \"1\" headline!? ...", Vector2f(0, 0));
+
     window->display();
 }
 
@@ -61,10 +63,56 @@ void Game::loadTextures(std::vector<std::string> textureFileNames)
 {
     for (int i = 0; i < textureFileNames.size(); i++)
     {
-        //textures.push_back()
         Texture texture;
-        if (!texture.loadFromFile("textures/" + textureFileNames.at(i)))
+        if (!texture.loadFromFile("assets/textures/" + textureFileNames.at(i)))
             window->close();
+        textures.push_back(texture);
+    }
+}
+
+void Game::drawString(std::string text, Vector2f position)
+{
+    for (int i = 0; i < text.length(); i++)
+    {
+        std::cout << int(text[i]) << "\n";
+        Vector2i letterSize = Vector2i(7, 13);
+
+        float letterScale = 2;
+
+        Sprite letter;
+        letter.setTexture(textures[0]);
+        letter.setScale(letterScale, letterScale);
+        if (int(text[i]) >= 65 && text[i] <= 80)
+            letter.setTextureRect(IntRect(((int)text[i] - 65) * letterSize.x, 0 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i]) >= 81 && text[i] <= 90)
+            letter.setTextureRect(IntRect(((int)text[i] - 81) * letterSize.x, 1 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i]) >= 97 && text[i] <= 102)
+            letter.setTextureRect(IntRect(((int)text[i] - 87) * letterSize.x, 1 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i]) >= 103 && text[i] <= 118)
+            letter.setTextureRect(IntRect(((int)text[i] - 103) * letterSize.x, 2 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i]) >= 119 && text[i] <= 122)
+            letter.setTextureRect(IntRect(((int)text[i] - 119) * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i]) >= 48 && text[i] <= 54)
+            letter.setTextureRect(IntRect(((int)text[i] - 39) * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if ((int)text[i] >= 55 && (int)text[i] <= 57)
+            letter.setTextureRect(IntRect(((int)text[i] - 55) * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i] == 46))
+            letter.setTextureRect(IntRect(4 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i] == 44))
+            letter.setTextureRect(IntRect(5 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i] == 34))
+            letter.setTextureRect(IntRect(6 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i] == 33))
+            letter.setTextureRect(IntRect(7 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if (int(text[i] == 63))
+            letter.setTextureRect(IntRect(8 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
+        else if (text[i] == 32)
+            letter.setTextureRect(IntRect(4 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
+        else
+            letter.setTextureRect(IntRect(3 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
+        letter.setPosition(position.x + i * (letterSize.x + 1) * letterScale, position.y);
+        window->draw(letter);
+
     }
 }
 

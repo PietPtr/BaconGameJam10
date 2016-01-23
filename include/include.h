@@ -8,4 +8,4 @@ int randint(int low, int high, int seed)
     return value;
 }
 
-#endif // SPACESHIP_H
+#endif // INCLUDE_HZ
