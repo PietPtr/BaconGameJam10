@@ -33,14 +33,14 @@ void Game::update()
         }
         if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (gamestate == INTRO)// && introDone)
+                if (gamestate == INTRO && introDone)
                 {
                     gamestate = HANK;
                     currentNews = startNews.at(1);//randint(0, startNews.size() - 1));
 
                     timeHankStartedTalking = totalTime.asMilliseconds();
                 }
-                if (gamestate == HANK)// && doneSpeaking)
+                if (gamestate == HANK && doneSpeaking)
                 {
                     gamestate = SELECTION;
                     currentPaper.setNews(currentNews);
@@ -105,15 +105,24 @@ void Game::drawIntro()
     bg.setScale(2, 2);
     window->draw(bg);
 
+    introDone = drawHankSpeaking(0, introText);
+
     Sprite moustache;
     moustache.setTexture(textures[2]);
     moustache.setScale(4, 4);
     moustache.setOrigin(22, 7);
-    moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
-    moustache.setRotation(sin(frame / 8) * 2);
+
+    if (!introDone)
+    {
+        moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
+        moustache.setRotation(sin(frame / 8) * 2);
+    }
+    else
+    {
+        moustache.setPosition(Vector2f(265, 437));
+    }
     window->draw(moustache);
 
-    introDone = drawHankSpeaking(0, introText);
 }
 
 void Game::drawHank()
@@ -123,15 +132,24 @@ void Game::drawHank()
     bg.setScale(2, 2);
     window->draw(bg);
 
+    doneSpeaking = drawHankSpeaking(timeHankStartedTalking, currentNews.message);
+
     Sprite moustache;
     moustache.setTexture(textures[2]);
     moustache.setScale(4, 4);
     moustache.setOrigin(22, 7);
-    moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
-    moustache.setRotation(sin(frame / 8) * 2);
+
+    if (!doneSpeaking)
+    {
+        moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
+        moustache.setRotation(sin(frame / 8) * 2);
+    }
+    else
+    {
+        moustache.setPosition(Vector2f(265, 437));
+    }
     window->draw(moustache);
 
-    doneSpeaking = drawHankSpeaking(timeHankStartedTalking, currentNews.message);
 }
 
 void Game::drawSelection()
@@ -258,7 +276,8 @@ void Game::loadNews()
 
                 for (int i = 0; i < 3; i++)
                 {
-                    headlines[i] = ;
+                    Headline newHeadline;
+                    headlines[i] = newHeadline;
                 }
             }
 
@@ -267,7 +286,7 @@ void Game::loadNews()
     }
     for (int i = 0; i < startNews.size(); i++)
     {
-        std::cout << startNews[i].message << "\n";
+        std::cout << startNews[i].headlines[0].text << "\n";
     }
 }
 
