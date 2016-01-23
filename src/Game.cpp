@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <fstream>
+#include <iostream>
 #include "Game.h"
 
 using namespace sf;
@@ -12,6 +14,7 @@ void Game::initialize()
 {
     loadAudio(audioFileNames);
     loadTextures(textureFileNames);
+    loadNews();
 }
 
 void Game::update()
@@ -40,7 +43,7 @@ void Game::draw()
 {
     window->clear();
 
-    drawString("This is, a test for \"1\" headline!? ...", Vector2f(0, 0));
+    drawString("King wastes millions   on failing parade.", Vector2f(0, 0));
 
     window->display();
 }
@@ -70,11 +73,28 @@ void Game::loadTextures(std::vector<std::string> textureFileNames)
     }
 }
 
+void Game::loadNews()
+{
+    std::string fileContent;
+    std::ifstream newsFile("assets/news/start");
+    //newsFile.open("assets/news/start");
+    if (newsFile.is_open())
+    {
+        while(getline(newsFile, fileContent))
+            std::cout << fileContent << "\n";
+        newsFile.close();
+    }
+}
+
 void Game::drawString(std::string text, Vector2f position)
 {
+    int line = 0;
+    int lineLength = 22;
     for (int i = 0; i < text.length(); i++)
     {
-        std::cout << int(text[i]) << "\n";
+        if (i % lineLength == 0)
+            line++;
+
         Vector2i letterSize = Vector2i(7, 13);
 
         float letterScale = 2;
@@ -110,7 +130,7 @@ void Game::drawString(std::string text, Vector2f position)
             letter.setTextureRect(IntRect(4 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
         else
             letter.setTextureRect(IntRect(3 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
-        letter.setPosition(position.x + i * (letterSize.x + 1) * letterScale, position.y);
+        letter.setPosition(position.x + (i % lineLength) * (letterSize.x + 1) * letterScale, position.y + (line - 1) * letterSize.y * letterScale);
         window->draw(letter);
 
     }
