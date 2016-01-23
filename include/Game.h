@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Audio.h"
 #include "include.h"
+#include "Paper.h"
 
 using namespace sf;
 
@@ -52,6 +53,7 @@ class Game
         int timeHankStartedTalking = 0;
         bool doneSpeaking = false;
         News currentNews;
+        Paper currentPaper;
 
         std::vector<std::string> audioFileNames { };
         std::vector<std::string> textureFileNames { "font.png", "hank-bg.png", "moustache.png", "table.png", "empty-paper.png" };

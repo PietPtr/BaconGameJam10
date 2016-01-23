@@ -33,15 +33,20 @@ void Game::update()
         }
         if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (gamestate == INTRO && introDone)
+                if (gamestate == INTRO)// && introDone)
                 {
                     gamestate = HANK;
                     currentNews = startNews.at(randint(0, startNews.size() - 1));
                     timeHankStartedTalking = totalTime.asMilliseconds();
                 }
-                if (gamestate == HANK && doneSpeaking)
+                if (gamestate == HANK)// && doneSpeaking)
                 {
                     gamestate = SELECTION;
+                    std::cout << "set gamestate \n";
+                    currentPaper.setNews(currentNews);
+                    std::cout << "set news \n";
+                    currentPaper.generate();
+                    std::cout << "generate news \n";
                 }
                 std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                 std::cout << "mouse y: " << event.mouseButton.y << std::endl;
@@ -85,7 +90,7 @@ void Game::draw()
         drawHank();
         break;
     case SELECTION:
-        //drawSelection();
+        drawSelection();
         break;
     case REACTION:
         //drawReaction();
@@ -129,6 +134,21 @@ void Game::drawHank()
     window->draw(moustache);
 
     doneSpeaking = drawHankSpeaking(timeHankStartedTalking, currentNews.message);
+}
+
+void Game::drawSelection()
+{
+    Sprite bg;
+    bg.setTexture(textures[3]);
+    bg.setScale(2, 2);
+    window->draw(bg);
+
+    currentPaper.draw(&textures[4], window);
+
+    for (int i = 0; i < 3; i++)
+    {
+        drawString(currentNews.headlines[i].text, Vector2f(210 * i * 2 + 16, 42), Color(0, 0, 0, 255), 22);
+    }
 }
 
 bool Game::drawHankSpeaking(int startTime, std::string text)

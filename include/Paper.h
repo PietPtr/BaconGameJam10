@@ -8,8 +8,9 @@ class Paper
 {
     public:
         Paper();
-        void generate(Texture paperTexture);
-        void draw();
+        void setNews(News news) { this->news = news; };
+        void generate();
+        void draw(Texture* paperTexture, RenderWindow* window);
     protected:
     private:
         News news;
