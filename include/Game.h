@@ -21,6 +21,8 @@ class Game
         void initialize();
 
         void update();
+        void updateReaction();
+        void recalculateStats();
 
         void draw();
         void drawIntro();
@@ -51,12 +53,27 @@ class Game
 
         bool introDone = false;
         int timeHankStartedTalking = 0;
+        int lastReactionUpdateTime = 0;
         bool doneSpeaking = false;
         News currentNews;
         Paper currentPaper;
 
+        int sales = 50;
+        int influence = 50;
+        int sympathy = 50;
+        int emotion = 50;
+        int money = 50;
+        int food = 50;
+
+        int newSympathy = 0;
+        int newEmotion = 0;
+        int newMoney = 0;
+        int newFood = 0;
+
+        int articleChosen = -1;
+
         std::vector<std::string> audioFileNames { };
-        std::vector<std::string> textureFileNames { "font.png", "hank-bg.png", "moustache.png", "table.png", "empty-paper.png" };
+        std::vector<std::string> textureFileNames { "font.png", "hank-bg.png", "moustache.png", "table.png", "empty-paper.png", "result-bg.png", "diamond.png" };
         std::vector<Audio*> sfx;
 
         std::vector<News> startNews;
