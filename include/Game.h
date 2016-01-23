@@ -9,7 +9,8 @@ using namespace sf;
 enum GameState
 {
     INTRO,
-    HANK,
+    HANK_STATUS,
+    HANK_MESSAGE,
     SELECTION,
     REACTION
 };
@@ -27,6 +28,7 @@ class Game
         void draw();
         void drawIntro();
         void drawHank();
+        void drawHankStatus();
         void drawSelection();
         void drawReaction();
 
@@ -45,6 +47,7 @@ class Game
     private:
         RenderWindow* window;
         GameState gamestate = INTRO;
+        GameState lastGamestate = INTRO;
 
         Time dt;
         Time totalTime;

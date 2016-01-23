@@ -35,16 +35,21 @@ void Game::update()
             {
                 if (gamestate == INTRO)//) && introDone)
                 {
-                    gamestate = HANK;
+                    gamestate = HANK_MESSAGE;
                     currentNews = startNews.at(randint(0, startNews.size() - 1));
 
                     timeHankStartedTalking = totalTime.asMilliseconds();
                 }
-                else if (gamestate == HANK)// && doneSpeaking)
+                else if (gamestate == HANK_MESSAGE)// && doneSpeaking)
                 {
                     gamestate = SELECTION;
                     currentPaper.setNews(currentNews);
                     currentPaper.generate();
+                }
+                else if (gamestate == HANK_STATUS)
+                {
+                    gamestate = HANK_MESSAGE;
+                    timeHankStartedTalking = totalTime.asMilliseconds();
                 }
                 else if (gamestate == SELECTION)
                 {
@@ -62,8 +67,12 @@ void Game::update()
                 }
                 else if (gamestate == REACTION && sympathy == newSympathy && emotion == newEmotion && money == newMoney && food == newFood)
                 {
-                    gamestate = HANK;
+                    gamestate = HANK_STATUS;
+                    timeHankStartedTalking = totalTime.asMilliseconds();
+                    currentNews = startNews.at(randint(0, startNews.size() - 1));
+                    //WARNING WARNING FIX THIS THIS SHOULD BE OTHER NEWS WHEN THAT EXISTS
                 }
+
                 //std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                 //std::cout << "mouse y: " << event.mouseButton.y << std::endl;
             }
@@ -77,7 +86,7 @@ void Game::update()
     case INTRO:
 
         break;
-    case HANK:
+    case HANK_MESSAGE:
 
         break;
     case SELECTION:
@@ -88,6 +97,7 @@ void Game::update()
         break;
     }
 
+    lastGamestate = gamestate;
     frame++;
 }
 
@@ -142,8 +152,11 @@ void Game::draw()
     case INTRO:
         drawIntro();
         break;
-    case HANK:
+    case HANK_MESSAGE:
         drawHank();
+        break;
+    case HANK_STATUS:
+        drawHankStatus();
         break;
     case SELECTION:
         drawSelection();
@@ -208,6 +221,47 @@ void Game::drawHank()
     }
     window->draw(moustache);
 
+}
+
+void Game::drawHankStatus()
+{
+    std::string statusMessage;
+
+    if (sales > 50)
+        statusMessage += "It looks like the Transmalvanian Post is selling very well, good job! ";
+    else
+        statusMessage += "The Transmalvanian Post does not seem to be doing great. Perhaps you should select articles that are more popular? ";
+
+    if (influence > 70)
+        statusMessage += "People hold our newspaper in high esteem, they seem to be influenced greatly by our opinions. Do not abuse this power.";
+    else if (influence < 30)
+        statusMessage += "People do not seem to take us seriously. I personally think our articles should stick to the truth more.";
+
+    if (statusMessage.length() == 0)
+        statusMessage += "Not much has changed as far as our sales and general reputation go.";
+
+    Sprite bg;
+    bg.setTexture(textures[1]);
+    bg.setScale(2, 2);
+    window->draw(bg);
+
+    doneSpeaking = drawHankSpeaking(timeHankStartedTalking, statusMessage);
+
+    Sprite moustache;
+    moustache.setTexture(textures[2]);
+    moustache.setScale(4, 4);
+    moustache.setOrigin(22, 7);
+
+    if (!doneSpeaking)
+    {
+        moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
+        moustache.setRotation(sin(frame / 8) * 2);
+    }
+    else
+    {
+        moustache.setPosition(Vector2f(265, 437));
+    }
+    window->draw(moustache);
 }
 
 void Game::drawSelection()
