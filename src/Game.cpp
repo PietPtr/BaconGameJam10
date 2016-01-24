@@ -17,6 +17,8 @@ void Game::initialize()
     loadAudio(audioFileNames);
     loadTextures(textureFileNames);
     loadNews();
+
+    sfx[0]->play();
 }
 
 void Game::update()
@@ -38,14 +40,14 @@ void Game::update()
                 if (gamestate == INTRO)//) && introDone)
                 {
                     gamestate = HANK_MESSAGE;
-                    currentNews = startNews.at(0);//randint(0, startNews.size() - 1));
+                    currentNews = startNews.at(randint(0, startNews.size() - 1));
                     timeHankStartedTalking = totalTime.asMilliseconds();
                 }
                 else if (gamestate == HANK_MESSAGE)// && doneSpeaking)
                 {
                     gamestate = SELECTION;
 
-                    if (finishedGame != UNFINISHED)
+                    if (finishedGame == DEATH)
                         gamestate = HANK_GAMEDONE;
 
                     std::cout << currentNews.endMessage << "\n";
@@ -59,6 +61,9 @@ void Game::update()
                 {
                     gamestate = HANK_MESSAGE;
                     timeHankStartedTalking = totalTime.asMilliseconds();
+
+                    if (finishedGame == BALANCED)
+                        gamestate = HANK_GAMEDONE;
                 }
                 else if (gamestate == SELECTION)
                 {
@@ -381,7 +386,9 @@ void Game::drawHankGamedone()
     }
     window->draw(moustache);
 
-    std::cout << "Game is finished because reason " << finishedGame << ".\n";
+    //drawString("Thanks for playing Paper Power!", Vector2f(784))
+    Label thanks("Thanks for playing Paper Power!", Vector2f(784, 0), totalTime.asSeconds());
+    thanks.draw(window, 0);
 }
 
 void Game::drawSelection()
@@ -483,7 +490,7 @@ void Game::loadAudio(std::vector<std::string> audioFileNames)
     for (int i = 0; i < audioFileNames.size(); i++)
     {
         sfx.push_back(new Audio());
-        sfx.back()->init(audioFileNames[i]);
+        sfx.back()->init("assets/" + audioFileNames[i]);
     }
 }
 

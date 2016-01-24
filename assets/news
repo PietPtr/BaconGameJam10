@@ -10,7 +10,7 @@ f-1
 ;The militairy has been growing. They held a huge recruitment campaign at the  main square of the capital. Take a look at these articles.
 :Join your country in  the fight against evil:70:20:20:-10:0:0
 :Illegal recruiting at the capital:40:70:-25:10:0:0
-:You won't believe what the Anzhel did!!:90:10:-10:0:0:0
+:You won't believe whatAnzhel did!!:90:10:-10:0:0:0
 s-1
 e-1
 m-1
@@ -74,7 +74,7 @@ f-1
 -
 ;General Anzhel marched through the capital to show off his troops to the people of Transmalvania, and to foreign press. How do you think we should spin this?
 :Anzhel shows off with march:60:75:-15:0:5:5 
-:Army intimidates our  neighbouring countries:70:50:-20:-10:-5:-5 
+:Our army intimidates  neighbouring countries:70:50:20:-10:-5:-5 
 :9 reasons you should  have been in the capital today:95:5:30:-20:-5:2
 s-1
 e-1

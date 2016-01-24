@@ -87,7 +87,7 @@ class Game
 
         FinishedGame finishedGame = UNFINISHED;
 
-        std::vector<std::string> audioFileNames { };
+        std::vector<std::string> audioFileNames { "theme-cut.wav" };
         std::vector<std::string> textureFileNames { "font.png", "hank-bg.png", "moustache.png", "table.png", "empty-paper.png", "result-bg.png", "diamond.png" };
         std::vector<Audio*> sfx;
 

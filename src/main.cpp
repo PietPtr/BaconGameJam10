@@ -30,8 +30,25 @@ int main()
     return 0;
 }
 
-void drawString(std::string text, Vector2f position, Color color, int lineLength, RenderWindow* window)
+void drawString(std::string originalText, Vector2f position, Color color, int lineLength, RenderWindow* window)
 {
+    /*std::string text;
+    for (int i = 0; i < (int)(originalText.length() / lineLength); i++)
+    {
+        //substrLen = lineLength >
+        std::string substring = originalText.substr(i * lineLength, lineLength);
+        std::cout << substring << "\n";
+        for (int l = substring.length() - 1; l >= 0; l--)
+        {
+            if (substring[l] == ' ')
+            {
+                substring[l] = '&';
+                text += substring;
+            }
+        }
+    }*/
+    std::string text = originalText;
+
     int line = 0;
     for (int i = 0; i < text.length(); i++)
     {
