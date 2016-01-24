@@ -8,13 +8,15 @@ Paper::Paper()
 
 void Paper::generate()
 {
+    images.clear();
+
     for (int i = 0; i < 3; i++)
     {
         Image image;
         int width = 180;
         int height = 264 - ((int)(news.headlines[i].text.length() / 22) + 1) * 13;
         std::cout << height << " " << width << " " << news.headlines[i].text << "\n";
-        image.create(183, height, Color(0, 0, 0, 0));
+        image.create(width, height, Color(255, 0, 0, 0));
 
         for (int y = 0; y < height; y += 2)
         {

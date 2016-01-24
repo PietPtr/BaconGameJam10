@@ -68,9 +68,28 @@ void Game::update()
                 else if (gamestate == REACTION && sympathy == newSympathy && emotion == newEmotion && money == newMoney && food == newFood)
                 {
                     gamestate = HANK_STATUS;
-                    timeHankStartedTalking = totalTime.asMilliseconds();
-                    currentNews = startNews.at(randint(0, startNews.size() - 1));
+                    //currentNews = startNews.at(randint(0, startNews.size() - 1));
                     //WARNING WARNING FIX THIS THIS SHOULD BE OTHER NEWS WHEN THAT EXISTS
+
+                    int lowestDistanceIndex = 0;
+                    int lowestDistace = 10000;
+                    for (int i = 0; i < otherNews.size(); i++)
+                    {
+                        int distance = 0;
+                        distance += otherNews[i].sympathy == -1 ? 0 : abs(sympathy - otherNews[i].sympathy);
+                        distance += otherNews[i].emotion == -1 ? 0 : abs(emotion - otherNews[i].emotion);
+                        distance += otherNews[i].money == -1 ? 0 : abs(money - otherNews[i].money);
+                        distance += otherNews[i].food == -1 ? 0 : abs(food - otherNews[i].food);
+                        if (distance < lowestDistace)
+                        {
+                            lowestDistanceIndex = i;
+                            lowestDistace = distance;
+                        }
+
+                        std::cout << distance << " distance, lowest: " << lowestDistanceIndex << "\n";
+                    }
+                    currentNews = otherNews[lowestDistanceIndex];
+                    timeHankStartedTalking = totalTime.asMilliseconds();
                 }
 
                 //std::cout << "mouse x: " << event.mouseButton.x << std::endl;
@@ -116,7 +135,6 @@ void Game::updateReaction()
             food += (newFood > food ? 1 : -1);
         lastReactionUpdateTime = totalTime.asMilliseconds();
     }
-    std::cout << sympathy << "\n";
 }
 
 void Game::recalculateStats()
@@ -128,10 +146,19 @@ void Game::recalculateStats()
     float influenceMod = pow(2, chosenHeadline.truth / 50.0 - 1);
     influence *= influenceMod;
 
-    newSympathy = sympathy + chosenHeadline.sympathy;
-    newEmotion = emotion + chosenHeadline.emotion;
-    newMoney = money + chosenHeadline.money;
-    newFood = food + chosenHeadline.food;
+    sales = sales > 100 ? 100 : sales;
+    influence = influence > 100 ? 100 : influence;
+    sales = sales < 0 ? 0 : sales;
+    influence = influence < 0 ? 0 : influence;
+
+    float statsMod = (sales / 300.0) + (influence / 100.0);
+
+    std::cout << "influence: " << influence << ", sales: " << sales << ", statsMod: " << statsMod << "\n";
+
+    newSympathy = (int)(sympathy + chosenHeadline.sympathy * statsMod);
+    newEmotion = (int)(emotion + chosenHeadline.emotion * statsMod);
+    newMoney = (int)(money + chosenHeadline.money * statsMod);
+    newFood = (int)(food + chosenHeadline.food * statsMod);
 
     newSympathy = newSympathy > 100 ? 100 : newSympathy;
     newSympathy = newSympathy < 0 ? 0 : newSympathy;
@@ -451,7 +478,7 @@ void Game::loadNews()
                 news.headlines[1] = headlines[1];
                 news.headlines[2] = headlines[2];
 
-                if (news.food == 0 && news.sympathy == 0 && news.emotion == 0 && news.money == 0)
+                if (news.food == -1 && news.sympathy == -1 && news.emotion == -1 && news.money == -1)
                     startNews.push_back(news);
                 else
                     otherNews.push_back(news);

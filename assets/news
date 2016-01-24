@@ -1,27 +1,54 @@
-;Yesterday, the king held a parade to celebrate his fathers birthday. This is  what our reporters have to say about it.
+;The king held a parade to celebrate his fathers birthday. This is what our    reporters have to say about it.
 :King wastes thousands on parade:80:60:10:10:-5:0
 :Royal father turns 90:50:90:-10:-10:-5:0
 :12 reasons yesterdays parade was a waste of time:85:15:5:20:-5:0
-s0
-e0
-m0
-f0
+s-1
+e-1
+m-1
+f-1
 -
 ;The militairy has been growing. They held a huge recruitment campaign at the  main square of the capital. Take a look at these articles.
 :Join your country in  the fight against evil:70:20:20:-10:0:0
 :Illegal recruiting at the capital:40:70:-25:10:0:0
-:You wont believe what the army did now!!:90:10:10:0:0:0
-s0
-e0
-m0
-f0
+:You wont believe what the army did now!!:90:10:-10:0:0:0
+s-1
+e-1
+m-1
+f-1
 -
 ;The economy is not doing well. Buying power is at an all time low, the stock  market has crashed. This is what our writers think about the situation.
 :Are the Kings expenses causing a recession?:80:20:20:15:-10:0
 :Military budget higher than ever:80:20:-20:15:-10:0
 :The recession, what   you need to know:60:90:0:-10:5:0
+s-1
+e-1
+m30
+f-1
+-
+;The people of Transmalvania are starving. This is probably because the borders are locked down by the military, in combination with the high taxes of the king.
+:Towns starve - King feasts:80:40:20:15:0:-5
+:Trade embargo causes food shortage:80:40:-20:10:0:-5
+:Where is the food shortage coming from?:50:90:0:-5:0:-2
+s-1
+e-1
+m20
+f20
+-
+;The King has been assassinated. An angry mob has overrun the palace. His family is trying to flee the country, but with the huge military it is unsure if they will ever be able to cross the border.
+:KING DEAD, LONG LIVE OUR GENERAL:100:50:100:-100:0:0
+:The tragic end of the monarchy:10:60:-10:25:0:0
+:Militairy fills vacuum of power after death of monarch:50:90:0:-10:0:0
+s100
+e100
+m-1
+f-1
+-
+;The King has given orders to execute the general of the army. With the general gone the king has virtually unlimited power, since the army is loyal to him now. The people of Transmalvania seem to applaud the kings decision.
+:Innocent man to be executed:10:60:10:25:0:0
+:General finally answers for his wrongdoings:80:50:-100:-100:0:0
+:King follows the will of the people:100:30:0:-10:0:0
 s0
-e0
-m0
-f0
+e100
+m-1
+f-1
 -
