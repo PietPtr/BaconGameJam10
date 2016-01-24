@@ -50,8 +50,6 @@ void Game::update()
                     if (finishedGame == DEATH)
                         gamestate = HANK_GAMEDONE;
 
-                    std::cout << currentNews.endMessage << "\n";
-
                     timeHankStartedTalking = totalTime.asMilliseconds();
 
                     currentPaper.setNews(currentNews);
@@ -97,7 +95,6 @@ void Game::update()
                             lowestDistanceIndex = i;
                             lowestDistance = distance;
                         }
-                        std::cout << distance << " distance at " << i << "\n";
                     }
                     //std::cout << "lowest distance: " << lowestDistance << ", " << lowestDistanceIndex << "\n";
                     currentNews = otherNews[lowestDistanceIndex];
@@ -106,7 +103,6 @@ void Game::update()
 
                     timeHankStartedTalking = totalTime.asMilliseconds();
 
-                    std::cout << currentNews.endMessage.length() << "<- endmessage \n";
 
                     if (lowestDistance > 50)
                     {
@@ -115,11 +111,9 @@ void Game::update()
                     }
                     if (currentNews.endMessage.length() != 0)
                     {
-                        std::cout << "The finishedgame var was set to DEATH in line 114, endmsg:" << currentNews.endMessage.length() <<"\n";
                         finishedGame = DEATH;
                         timeHankStartedTalking = totalTime.asMilliseconds();
                     }
-
 
                     std::vector<std::string> emptyStrList;
                     labelTexts = emptyStrList;
@@ -188,8 +182,6 @@ void Game::recalculateStats()
     influence = influence < 0 ? 0 : influence;
 
     float statsMod = (sales / 300.0) + (influence / 100.0);
-
-    std::cout << "influence: " << influence << ", sales: " << sales << ", statsMod: " << statsMod << "\n";
 
     newSympathy = (int)(sympathy + chosenHeadline.sympathy * statsMod);
     newEmotion = (int)(emotion + chosenHeadline.emotion * statsMod);
@@ -286,6 +278,9 @@ void Game::drawIntro()
         moustache.setPosition(Vector2f(265, 437));
     }
     window->draw(moustache);
+
+    Label thanks("Click anywhere to continue.", Vector2f(848, 0), totalTime.asSeconds());
+    thanks.draw(window, 0);
 }
 
 void Game::drawHank()
@@ -591,7 +586,7 @@ void Game::loadNews()
     }
     for (int i = 0; i < otherNews.size(); i++)
     {
-        std::cout << otherNews[i].message << ", " << otherNews[i].endMessage.length() << "\n";
+        //std::cout << otherNews[i].message << ", " << otherNews[i].endMessage.length() << "\n";
     }
 }
 

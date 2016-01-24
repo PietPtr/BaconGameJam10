@@ -90,3 +90,62 @@ e-1
 m55
 f55
 -
+;In a "democratic" election General Anzhel was chosen to as the supreme leader of Transmalvania. Fireworks can be heard all over the country, people are partying in the streets.
+s100
+e0
+m-1
+f-1
+>As a result of the election the monarchy has been abolished. King Cyrilio and his family had to leave the country to evade arrest. Do you think our newspaper has something to do with the hate against Cyrilio?
+-
+;The people demanded, and King Cyrilio listened. General Anzhel has been removed from his position. The Transmalvanians grew to hate the General in the past few years.
+s0
+e100
+m-1
+f-1
+>Now that General Anzhel is gone, people expect that their living conditions will soon improve. A different general will be appointed in the near future. For now, King Cyrilio will hold the post. I wonder where the hate for the general came from?
+-
+;The general living standards have been improving. Especially traders have been earning lots of money. A traders association has written an open letter to the government demanding the same tax laws as the aristocratic ruling class. No official statement has been released yet.
+:Aristocrats deny fair tax laws to traders:90:35:10:15:0:0
+:Rich get richer - traders demand tax exceptions:70:60:5:10:-3:0
+:Open letter to the government:40:100:5:-25:15:0
+s-1
+e75
+m80
+f-1
+-
+;The people are hungry and demand food. Neither the king nor the army has taken any action to resolve the situation. This is what our reporters wrote.
+:King denies food:90:30:25:25:0:-5
+:Army will not feed your kids:90:30:25:25:0:-5
+:PSA - Where your food is:40:95:0:-25:-5:25
+s-1
+e80
+m-1
+f20
+-
+;The recent harvest has failed. Food supplies will certainly be low, we should warn people about how to ransom their supplies.
+:FOOD CRISIS:90:20:0:10:-10:-20
+:You will not believe these food saving methods!:70:40:0:-5:-5:-15
+:Expert says we can save this harvest:55:90:0:-20:0:5
+s-1
+e50
+m50
+f80
+-
+;During an exercise in recently purchased jet planes one of the nations best pilots was lethally injured. The King has started using his face as propaganda against militairy excersises.
+:King advertises dead man:80:20:20:10:5:3
+:No safety regulations in army:70:30:-20:10:5:3
+:Pilot killed during exercise:40:90:-5:5:0:0
+s70
+e50
+m50
+f-1
+-
+;Every single worker in the transportation industry is on strike. It is unclear how they organised it, but we believe social media played a role. No officials wanted to respond to our reporters.
+:Transportation on strike!:30:90:0:25:-5:-10
+:No royal reaction to strike:50:50:18:25:-5:-10
+:5 ways to get to your destination:90:10:0:-20:0:-5
+s-1
+e80
+m20
+f-1
+-

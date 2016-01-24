@@ -15,7 +15,6 @@ void Paper::generate()
         Image image;
         int width = 180;
         int height = 264 - ((int)(news.headlines[i].text.length() / 22) + 1) * 13;
-        std::cout << height << " " << width << " " << news.headlines[i].text << "\n";
         image.create(width, height, Color(255, 0, 0, 0));
 
         for (int y = 0; y < height; y += 2)

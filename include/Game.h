@@ -107,5 +107,5 @@ class Game
         std::vector<std::string> react_militairy { "Hurray for the General!", "I should enlist" };
         std::vector<std::string> react_monarch { "Long live the King!", "Hurray for King Cyrilio!" };
 
-        std::string introText = "Good morning. Welcome to your new job as editor of the Transmalvanian Post.   Transmalvania is a relativily poor country where the monarch, King Cyrilio,   and the head of the army, General Anzhel, are always fighting for the hearts  of the people. This newspaper needs an objective editor to make sure we       publish truthful stories. We try to inform the people, not influence them. I  am Hank, I will show you the articles the journalists have written and presentyou the facts. Then, you select what appears in the paper. Click to continue.";
+        std::string introText = "Good morning. Welcome to your new job as editor of the Transmalvanian Post.   Transmalvania is a relativily poor country where the monarch, King Cyrilio,   and the head of the army, General Anzhel, are always fighting for the hearts  of the people. This newspaper needs an objective editor, for press can be a powerful weapon in the wrong hands. We try to inform the people, not influence them. I  am Hank, I will show you the articles the journalists have written and presentyou the facts. Then, you select what appears in the paper.";
 };
