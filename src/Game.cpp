@@ -5,6 +5,8 @@
 
 using namespace sf;
 
+void drawString(std::string text, Vector2f position, Color color, int lineLength, RenderWindow* window);
+
 Game::Game(RenderWindow* _window)
 {
     window = _window;
@@ -76,10 +78,10 @@ void Game::update()
                     for (int i = 0; i < otherNews.size(); i++)
                     {
                         int distance = 0;
-                        distance += otherNews[i].sympathy == -1 ? 0 : abs(sympathy - otherNews[i].sympathy);
-                        distance += otherNews[i].emotion == -1 ? 0 : abs(emotion - otherNews[i].emotion);
-                        distance += otherNews[i].money == -1 ? 0 : abs(money - otherNews[i].money);
-                        distance += otherNews[i].food == -1 ? 0 : abs(food - otherNews[i].food);
+                        distance += otherNews[i].sympathy == -1 ? 10 : abs(sympathy - otherNews[i].sympathy);
+                        distance += otherNews[i].emotion == -1 ? 10 : abs(emotion - otherNews[i].emotion);
+                        distance += otherNews[i].money == -1 ? 10 : abs(money - otherNews[i].money);
+                        distance += otherNews[i].food == -1 ? 10 : abs(food - otherNews[i].food);
                         if (distance < lowestDistace)
                         {
                             lowestDistanceIndex = i;
@@ -89,7 +91,15 @@ void Game::update()
                         std::cout << distance << " distance, lowest: " << lowestDistanceIndex << "\n";
                     }
                     currentNews = otherNews[lowestDistanceIndex];
+
+                    otherNews.erase(otherNews.begin()+lowestDistanceIndex);
+
                     timeHankStartedTalking = totalTime.asMilliseconds();
+
+                    std::vector<std::string> emptyStrList;
+                    labelTexts = emptyStrList;
+                    std::vector<Label> emptyLabelList;
+                    labels = emptyLabelList;
                 }
 
                 //std::cout << "mouse x: " << event.mouseButton.x << std::endl;
@@ -168,6 +178,33 @@ void Game::recalculateStats()
     newMoney = newMoney < 0 ? 0 : newMoney;
     newFood = newFood > 100 ? 100 : newFood;
     newFood = newFood < 0 ? 0 : newFood;
+
+    if (newEmotion > emotion) //people got angry
+        labelTexts.insert(std::end(labelTexts), std::begin(react_angry), std::end(react_angry));
+    if (newEmotion < emotion)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_happy), std::end(react_happy));
+    if (newSympathy > sympathy)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_militairy), std::end(react_militairy));
+    if (newSympathy < sympathy)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_monarch), std::end(react_monarch));
+    if (chosenHeadline.truth < 0.3)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_lowTruth), std::end(react_lowTruth));
+    if (chosenHeadline.truth < 0.7)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_highTruth), std::end(react_highTruth));
+    if (chosenHeadline.quality < 0.3)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_lowQuality), std::end(react_lowQuality));
+    if (chosenHeadline.quality < 0.7)
+        labelTexts.insert(std::end(labelTexts), std::begin(react_highQuality), std::end(react_highQuality));
+
+    for (int x = 0; x < 2; x++)
+    {
+        for (int y = 0; y < 2; y++)
+        {
+            Label label(labelTexts[randint(0, labelTexts.size() - 1)],
+                    Vector2f(350 + x * 512, 50 + y * 384 ), totalTime.asMilliseconds());
+            labels.push_back(label);
+        }
+    }
 }
 
 void Game::draw()
@@ -316,9 +353,9 @@ void Game::drawSelection()
 
     for (int i = 0; i < 3; i++)
     {
-        drawString(currentNews.headlines[i].text, Vector2f(210 * i * 2 + 20, 42), Color(0, 0, 0, 255), 22);
-        drawString("Popularity", Vector2f(104 + 210 * i * 2, 614), Color(150, 150, 150), 22);
-        drawString("Truth", Vector2f(112 + 210 * i * 2, 658), Color(150, 150, 150), 22);
+        drawString(currentNews.headlines[i].text, Vector2f(210 * i * 2 + 20, 42), Color(0, 0, 0, 255), 22, window);
+        drawString("Popularity", Vector2f(104 + 210 * i * 2, 614), Color(150, 150, 150), 22, window);
+        drawString("Truth", Vector2f(112 + 210 * i * 2, 658), Color(150, 150, 150), 22, window);
     }
 }
 
@@ -353,29 +390,17 @@ void Game::drawReaction()
     foodMeter.setScale(2, 2);
     window->draw(foodMeter);
 
-    std::string sympathyStr = "Sympathy";
-  //  if (sympathy != newSympathy)
-    //    sympathyStr = newSympathy > sympathy ? "Sympathy ++" : "Sympathy --";
+    drawString("Sympathy", Vector2f(88, 54), Color(150, 150, 150), 22, window);
+    drawString("Emotion", Vector2f(96, 192), Color(150, 150, 150), 22, window);
+    drawString("Money", Vector2f(108, 330), Color(150, 150, 150), 22, window);
+    drawString("Food", Vector2f(116, 468), Color(150, 150, 150), 22, window);
 
-    std::string emotionStr = "Emotion";
-   // if (emotion != newEmotion)
-      //  emotionStr = newEmotion > emotion ? "Emotion ++" : "Emotion --";
+    drawString("Click to advance to the next day.", Vector2f(752, 690), Color(25, 25, 25), 100, window);
 
-    std::string moneyStr = "Money";
-   // if (money != newMoney)
-      //  moneyStr = newMoney > money ? "Money ++" : "Money --";
-
-    std::string foodStr = "Food";
-    //if (food != newFood)
-       // foodStr = newFood > food ? "Food ++" : "Food --";
-
-
-    drawString(sympathyStr, Vector2f(88, 54), Color(150, 150, 150), 22);
-    drawString(emotionStr, Vector2f(96, 192), Color(150, 150, 150), 22);
-    drawString(moneyStr, Vector2f(108, 330), Color(150, 150, 150), 22);
-    drawString(foodStr, Vector2f(116, 468), Color(150, 150, 150), 22);
-
-    drawString("Click to advance to the next day.", Vector2f(752, 690), Color(25, 25, 25), 100);
+    for (int i = 0; i < labels.size(); i++)
+    {
+        labels[i].draw(window, totalTime.asMilliseconds());
+    }
 }
 
 bool Game::drawHankSpeaking(int startTime, std::string text)
@@ -387,7 +412,7 @@ bool Game::drawHankSpeaking(int startTime, std::string text)
     {
         textToBeDrawn += text[i];
     }
-    drawString(textToBeDrawn, Vector2f(4, 520), Color(200, 200, 200), 78);
+    drawString(textToBeDrawn, Vector2f(4, 520), Color(200, 200, 200), 78, window);
 
     return limit == text.length();
 }
@@ -544,60 +569,6 @@ Headline Game::createHeadline(std::string line)
     headline.food = std::stoi(str_food, &sz);
 
     return headline;
-}
-
-void Game::drawString(std::string text, Vector2f position, Color color, int lineLength)
-{
-    int line = 0;
-    for (int i = 0; i < text.length(); i++)
-    {
-        if (i % lineLength == 0)
-            line++;
-
-        Vector2i letterSize = Vector2i(7, 13);
-
-        float letterScale = 2;
-
-        Sprite letter;
-        letter.setTexture(textures[0]);
-        letter.setScale(letterScale, letterScale);
-        if (int(text[i]) >= 65 && text[i] <= 80)
-            letter.setTextureRect(IntRect(((int)text[i] - 65) * letterSize.x, 0 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i]) >= 81 && text[i] <= 90)
-            letter.setTextureRect(IntRect(((int)text[i] - 81) * letterSize.x, 1 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i]) >= 97 && text[i] <= 102)
-            letter.setTextureRect(IntRect(((int)text[i] - 87) * letterSize.x, 1 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i]) >= 103 && text[i] <= 118)
-            letter.setTextureRect(IntRect(((int)text[i] - 103) * letterSize.x, 2 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i]) >= 119 && text[i] <= 122)
-            letter.setTextureRect(IntRect(((int)text[i] - 119) * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i]) >= 48 && text[i] <= 54)
-            letter.setTextureRect(IntRect(((int)text[i] - 39) * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if ((int)text[i] >= 55 && (int)text[i] <= 57)
-            letter.setTextureRect(IntRect(((int)text[i] - 55) * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i] == 46))
-            letter.setTextureRect(IntRect(4 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i] == 44))
-            letter.setTextureRect(IntRect(5 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i] == 34))
-            letter.setTextureRect(IntRect(6 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i] == 33))
-            letter.setTextureRect(IntRect(7 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if (int(text[i] == 63))
-            letter.setTextureRect(IntRect(8 * letterSize.x, 3 * letterSize.y, letterSize.x, letterSize.y));
-        else if (text[i] == 32)
-            letter.setTextureRect(IntRect(4 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
-        else if (text[i] == 43)
-            letter.setTextureRect(IntRect(5 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
-        else if (text[i] == 45)
-            letter.setTextureRect(IntRect(6 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
-        else
-            letter.setTextureRect(IntRect(3 * letterSize.x, 4 * letterSize.y, letterSize.x, letterSize.y));
-        letter.setPosition(position.x + (i % lineLength) * (letterSize.x + 1) * letterScale, position.y + (line - 1) * letterSize.y * letterScale);
-        letter.setColor(color);
-        window->draw(letter);
-
-    }
 }
 
 int Game::randint(int low, int high)
