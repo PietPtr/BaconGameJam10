@@ -1,7 +1,7 @@
-;King Cyrilioheld a parade to celebrate his fathers birthday. This is what our    reporters have to say about it.
+;King Cyrilio held a parade to celebrate his fathers birthday. This is what ourreporters have to say about it.
 :King wastes thousands on parade:80:60:10:10:-5:0
 :Royal father turns 90:50:90:-10:-10:-5:0
-:12 reasons yesterdays parade was a waste of time:85:15:5:20:-5:0
+:12 reasons the parade was a waste of time:85:15:5:20:-5:0
 s-1
 e-1
 m-1
@@ -10,7 +10,7 @@ f-1
 ;The militairy has been growing. They held a huge recruitment campaign at the  main square of the capital. Take a look at these articles.
 :Join your country in  the fight against evil:70:20:20:-10:0:0
 :Illegal recruiting at the capital:40:70:-25:10:0:0
-:You wont believe what the Anzhel did!!:90:10:-10:0:0:0
+:You won't believe what the Anzhel did!!:90:10:-10:0:0:0
 s-1
 e-1
 m-1
@@ -72,16 +72,16 @@ e70
 m-1
 f-1
 -
-;General Anzhel marched through the capital to show off his troops to the people  of Transmalvania, and to foreign press. How do you think we should spin this?
-:Anzhel shows off withmarch:60:75:-15:0:5:5 
-:Army intimidates our neighbouring countries:70:50:-20:-10:-5:-5 
-:9 reasons you should have been in the capital today:95:5:30:-20:-5:2
+;General Anzhel marched through the capital to show off his troops to the people of Transmalvania, and to foreign press. How do you think we should spin this?
+:Anzhel shows off with march:60:75:-15:0:5:5 
+:Army intimidates our  neighbouring countries:70:50:-20:-10:-5:-5 
+:9 reasons you should  have been in the capital today:95:5:30:-20:-5:2
 s-1
 e-1
 m45
 f45
 -
-;Reputable bankers and financial advisors have leaked to us that they suspect the country is on the brink of an economic crisis.
+;Reputable bankers and financial advisors have leaked to us that they suspect  the country is on the brink of an economic crisis.
 :Transmalvania bankrupt:60:80:0:25:-25:-20
 :No crisis inbound, say bankers:70:20:0:-25:-15:-5
 :12 places to hide your cash where NOBODY    will find it:75:40:0:0:-10:0

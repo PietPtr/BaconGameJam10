@@ -18,6 +18,7 @@ struct News
 {
     Headline headlines[3];
     std::string message;
+    std::string endMessage; //can be empty
     //the cause of why this message appears
     int sympathy;
     int emotion;

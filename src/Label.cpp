@@ -13,7 +13,7 @@ Label::Label(std::string text, Vector2f position, int currentTime)
 
 void Label::draw(RenderWindow* window, int currentTime)
 {
-    RectangleShape bg(Vector2f(text.length() * 16, 26));
+    RectangleShape bg(Vector2f(text.length() * 16 + 2, 28));
     bg.setFillColor(Color(50, 50, 50));
     bg.setPosition(position - Vector2f(2, 2));
     bg.setOutlineThickness(2);

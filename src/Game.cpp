@@ -38,13 +38,20 @@ void Game::update()
                 if (gamestate == INTRO)//) && introDone)
                 {
                     gamestate = HANK_MESSAGE;
-                    currentNews = startNews.at(randint(0, startNews.size() - 1));
-
+                    currentNews = startNews.at(0);//randint(0, startNews.size() - 1));
                     timeHankStartedTalking = totalTime.asMilliseconds();
                 }
                 else if (gamestate == HANK_MESSAGE)// && doneSpeaking)
                 {
                     gamestate = SELECTION;
+
+                    if (finishedGame != UNFINISHED)
+                        gamestate = HANK_GAMEDONE;
+
+                    std::cout << currentNews.endMessage << "\n";
+
+                    timeHankStartedTalking = totalTime.asMilliseconds();
+
                     currentPaper.setNews(currentNews);
                     currentPaper.generate();
                 }
@@ -70,11 +77,9 @@ void Game::update()
                 else if (gamestate == REACTION && sympathy == newSympathy && emotion == newEmotion && money == newMoney && food == newFood)
                 {
                     gamestate = HANK_STATUS;
-                    //currentNews = startNews.at(randint(0, startNews.size() - 1));
-                    //WARNING WARNING FIX THIS THIS SHOULD BE OTHER NEWS WHEN THAT EXISTS
 
                     int lowestDistanceIndex = 0;
-                    int lowestDistace = 10000;
+                    int lowestDistance = 10000;
                     for (int i = 0; i < otherNews.size(); i++)
                     {
                         int distance = 0;
@@ -82,24 +87,40 @@ void Game::update()
                         distance += otherNews[i].emotion == -1 ? 10 : abs(emotion - otherNews[i].emotion);
                         distance += otherNews[i].money == -1 ? 10 : abs(money - otherNews[i].money);
                         distance += otherNews[i].food == -1 ? 10 : abs(food - otherNews[i].food);
-                        if (distance < lowestDistace)
+                        if (distance < lowestDistance)
                         {
                             lowestDistanceIndex = i;
-                            lowestDistace = distance;
+                            lowestDistance = distance;
                         }
-
-                        std::cout << distance << " distance, lowest: " << lowestDistanceIndex << "\n";
+                        std::cout << distance << " distance at " << i << "\n";
                     }
+                    //std::cout << "lowest distance: " << lowestDistance << ", " << lowestDistanceIndex << "\n";
                     currentNews = otherNews[lowestDistanceIndex];
 
                     otherNews.erase(otherNews.begin()+lowestDistanceIndex);
 
                     timeHankStartedTalking = totalTime.asMilliseconds();
 
+                    std::cout << currentNews.endMessage.length() << "<- endmessage \n";
+
+                    if (lowestDistance > 50)
+                    {
+                        finishedGame = BALANCED;
+                        timeHankStartedTalking = totalTime.asMilliseconds();
+                    }
+                    if (currentNews.endMessage.length() != 0)
+                    {
+                        std::cout << "The finishedgame var was set to DEATH in line 114, endmsg:" << currentNews.endMessage.length() <<"\n";
+                        finishedGame = DEATH;
+                        timeHankStartedTalking = totalTime.asMilliseconds();
+                    }
+
+
                     std::vector<std::string> emptyStrList;
                     labelTexts = emptyStrList;
                     std::vector<Label> emptyLabelList;
                     labels = emptyLabelList;
+
                 }
 
                 //std::cout << "mouse x: " << event.mouseButton.x << std::endl;
@@ -187,13 +208,13 @@ void Game::recalculateStats()
         labelTexts.insert(std::end(labelTexts), std::begin(react_militairy), std::end(react_militairy));
     if (newSympathy < sympathy)
         labelTexts.insert(std::end(labelTexts), std::begin(react_monarch), std::end(react_monarch));
-    if (chosenHeadline.truth < 0.3)
+    if (chosenHeadline.truth < 30)
         labelTexts.insert(std::end(labelTexts), std::begin(react_lowTruth), std::end(react_lowTruth));
-    if (chosenHeadline.truth < 0.7)
+    if (chosenHeadline.truth > 70)
         labelTexts.insert(std::end(labelTexts), std::begin(react_highTruth), std::end(react_highTruth));
-    if (chosenHeadline.quality < 0.3)
+    if (chosenHeadline.quality < 30)
         labelTexts.insert(std::end(labelTexts), std::begin(react_lowQuality), std::end(react_lowQuality));
-    if (chosenHeadline.quality < 0.7)
+    if (chosenHeadline.quality > 70)
         labelTexts.insert(std::end(labelTexts), std::begin(react_highQuality), std::end(react_highQuality));
 
     for (int x = 0; x < 2; x++)
@@ -221,6 +242,9 @@ void Game::draw()
         break;
     case HANK_STATUS:
         drawHankStatus();
+        break;
+    case HANK_GAMEDONE:
+        drawHankGamedone();
         break;
     case SELECTION:
         drawSelection();
@@ -257,7 +281,6 @@ void Game::drawIntro()
         moustache.setPosition(Vector2f(265, 437));
     }
     window->draw(moustache);
-
 }
 
 void Game::drawHank()
@@ -326,6 +349,39 @@ void Game::drawHankStatus()
         moustache.setPosition(Vector2f(265, 437));
     }
     window->draw(moustache);
+}
+
+void Game::drawHankGamedone()
+{
+    Sprite bg;
+    bg.setTexture(textures[1]);
+    bg.setScale(2, 2);
+    window->draw(bg);
+
+    bool isDoneSpeaking = true;
+    if (finishedGame == BALANCED)
+        isDoneSpeaking = drawHankSpeaking(timeHankStartedTalking, "Congratualations, you have succesfully completed your term as an editor of the Transmalvanian Post. The King and the General are still alive, under your command our newspaper has informed the people.");
+    else if (finishedGame == DEATH)
+        isDoneSpeaking = drawHankSpeaking(timeHankStartedTalking, currentNews.endMessage);
+
+
+    Sprite moustache;
+    moustache.setTexture(textures[2]);
+    moustache.setScale(4, 4);
+    moustache.setOrigin(22, 7);
+
+    if (!isDoneSpeaking)
+    {
+        moustache.setPosition(Vector2f(265, 437 + sin(frame / 5) * 6));
+        moustache.setRotation(sin(frame / 8) * 2);
+    }
+    else
+    {
+        moustache.setPosition(Vector2f(265, 437));
+    }
+    window->draw(moustache);
+
+    std::cout << "Game is finished because reason " << finishedGame << ".\n";
 }
 
 void Game::drawSelection()
@@ -448,11 +504,13 @@ void Game::loadNews()
     std::ifstream newsFile("assets/news");
     if (newsFile.is_open())
     {
+
         News news;
         Headline headlines[3];
 
         while(getline(newsFile, fileContent))
         {
+
             if (fileContent[0] == ':')
             {
                 for (int i = 0; i < 3; i++)
@@ -470,7 +528,6 @@ void Game::loadNews()
             {
                 news.message = fileContent;
                 news.message.erase(news.message.begin());
-                //std::cout << news.message << "\n";
             }
 
             if (fileContent[0] == 's')
@@ -497,6 +554,11 @@ void Game::loadNews()
                 str_food.erase(str_food.begin());
                 news.food = std::stoi(str_food, nullptr);
             }
+            if (fileContent[0] == '>')
+            {
+                news.endMessage = fileContent;
+                news.endMessage.erase(news.endMessage.begin());
+            }
             if (fileContent[0] == '-')
             {
                 news.headlines[0] = headlines[0];
@@ -513,14 +575,16 @@ void Game::loadNews()
                     Headline newHeadline;
                     headlines[i] = newHeadline;
                 }
+                News newNews;
+                news = newNews;
             }
 
         }
         newsFile.close();
     }
-    for (int i = 0; i < startNews.size(); i++)
+    for (int i = 0; i < otherNews.size(); i++)
     {
-        std::cout << startNews[i].headlines[0].text << "\n";
+        std::cout << otherNews[i].message << ", " << otherNews[i].endMessage.length() << "\n";
     }
 }
 

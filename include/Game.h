@@ -12,8 +12,16 @@ enum GameState
     INTRO,
     HANK_STATUS,
     HANK_MESSAGE,
+    HANK_GAMEDONE,
     SELECTION,
     REACTION
+};
+
+enum FinishedGame
+{
+    UNFINISHED,
+    DEATH,
+    BALANCED
 };
 
 class Game
@@ -30,6 +38,7 @@ class Game
         void drawIntro();
         void drawHank();
         void drawHankStatus();
+        void drawHankGamedone();
         void drawSelection();
         void drawReaction();
 
@@ -76,6 +85,8 @@ class Game
 
         int articleChosen = -1;
 
+        FinishedGame finishedGame = UNFINISHED;
+
         std::vector<std::string> audioFileNames { };
         std::vector<std::string> textureFileNames { "font.png", "hank-bg.png", "moustache.png", "table.png", "empty-paper.png", "result-bg.png", "diamond.png" };
         std::vector<Audio*> sfx;
@@ -89,12 +100,12 @@ class Game
         std::vector<std::string> labelTexts;
         std::vector<std::string> react_lowTruth { "That can't be correct...", "Hmmmm", "I don't think that's true." };
         std::vector<std::string> react_highTruth { "Exactly!", "I agree", "Yes!" };
-        std::vector<std::string> react_lowQuality { "Ugh, moneygrabbers.", "You call that news?", "This paper used to be better" };
-        std::vector<std::string> react_highQuality { "Formidable piecie of writing", "This paper has improved a lot lately" };
+        std::vector<std::string> react_lowQuality { "That's just bad journalism", "You call that news?", "This paper used to be better" };
+        std::vector<std::string> react_highQuality { "Ah, good article.", "This paper is improving." };
         std::vector<std::string> react_angry { "What!", "I am outraged!", "This can't be true!" };
         std::vector<std::string> react_happy { "Yeah!", "That is amazing news!", "Great" };
-        std::vector<std::string> react_militairy { "Hurray for the general!", "I should enlist" };
-        std::vector<std::string> react_monarch { "Long live the King!" };
+        std::vector<std::string> react_militairy { "Hurray for the General!", "I should enlist" };
+        std::vector<std::string> react_monarch { "Long live the King!", "Hurray for King Cyrilio!" };
 
         std::string introText = "Good morning. Welcome to your new job as editor of the Transmalvanian Post.   Transmalvania is a relativily poor country where the monarch, King Cyrilio,   and the head of the army, General Anzhel, are always fighting for the hearts  of the people. This newspaper needs an objective editor to make sure we       publish truthful stories. We try to inform the people, not influence them. I  am Hank, I will show you the articles the journalists have written and presentyou the facts. Then, you select what appears in the paper. Click to continue.";
 };
